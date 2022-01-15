@@ -9,4 +9,16 @@ cast to lowercase, only including those which have the correct length and no spe
 Runs solver given a corpus as generated above, and a target word from that corpus. Behavior is undefined if target word is not contained in
 corpus file. Output is a sequence of guesses terminating in the correct guess.
 
+### Example Usage
+```bash
+$ python cleaner.py 5 data/wiki-100k.txt data/five_letter_words.txt 
+Finished!
+$ python solver.py data/five_letter_words.txt focus
+ollie
+bravo
+costs
+coups
+focus
+```
+
 Requires python 3.8+
