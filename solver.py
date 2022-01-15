@@ -58,7 +58,6 @@ def solve_wordle(corpus_filename: str, target_word: str) -> List[str]:
     guesses = solver_loop(corpus, target_word)
     for guess in guesses:
         print(guess)
-    print(len(guesses))
 
 if __name__ == "__main__":
     corpus_filename = sys.argv[1]
