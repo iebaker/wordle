@@ -1,1 +1,1 @@
-python solver.py data/five_letter_words.txt bogus
+python solver.py data/better_five_letter_words.txt panic
