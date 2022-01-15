@@ -22,6 +22,8 @@ def score_guess(guessed_word: str, target_word: str) -> List[LetterResult]:
 def get_filtered_corpus(guessed_word: str, score: List[LetterResult], corpus: List[str]) -> List[str]:
     filtered_corpus = []
     for candidate in corpus:
+        if candidate == guessed_word:
+            continue
         should_include = True
         for index in range(len(guessed_word)):
             if score[index] == LetterResult.RIGHT_POSITION and candidate[index] != guessed_word[index]:
