@@ -1,7 +1,8 @@
 import sys
 from enum import Enum, auto
-from typing import List, Tuple
+from typing import List, Tuple, Dict
 from random import choice 
+from collections import defaultdict
 
 BG_GREEN = u"\u001b[42m"
 BG_YELLOW = u"\u001b[43m"
@@ -46,12 +47,19 @@ def get_filtered_corpus(guessed_word: str, score: List[LetterResult], corpus: Li
             filtered_corpus.append(candidate)
     return filtered_corpus
 
+def count_unique_letters(corpus: List[str]) -> Dict[int, List[str]]:
+    result = defaultdict(list)
+    for word in corpus:
+        result[len(set(word))].append(word)
+    return result
+
 def solver_loop(corpus: List[str], target_word: str) -> List[Tuple[str, List[LetterResult]]]:
     guesses = []
     filtered_corpus = corpus.copy()
     guessed_word = None
     while guessed_word != target_word:
-        guessed_word = choice(filtered_corpus)
+        unique_counts = count_unique_letters(filtered_corpus)
+        guessed_word = choice(unique_counts[max(unique_counts.keys())])
         score = score_guess(guessed_word, target_word)
         guesses.append((guessed_word, score))
         filtered_corpus = get_filtered_corpus(guessed_word, score, filtered_corpus)
