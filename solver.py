@@ -62,11 +62,11 @@ def colorized_scored_guess(scored_guess: Tuple[str, List[LetterResult]]) -> str:
     guess, score = scored_guess
     for index in range(len(guess)):
         if score[index] == LetterResult.RIGHT_POSITION:
-            result = result + BG_GREEN + " " + guess[index].upper() + " " + RESET
+            result = result + f"{BG_GREEN} {guess[index].upper()} {RESET}"
         elif score[index] == LetterResult.WRONG_POSITION:
-            result = result + BG_YELLOW + " " + guess[index].upper() + " " + RESET
+            result = result + f"{BG_YELLOW} {guess[index].upper()} {RESET}"
         else:
-            result = result + " " + guess[index].upper() + " "
+            result = result + f" {guess[index].upper()} "
     return result
 
 def solve_wordle(corpus_filename: str, target_word: str) -> List[Tuple[str, List[LetterResult]]]:
