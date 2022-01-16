@@ -29,7 +29,10 @@ def get_filtered_corpus(guessed_word: str, score: List[LetterResult], corpus: Li
             if score[index] == LetterResult.RIGHT_POSITION and candidate[index] != guessed_word[index]:
                 should_include = False
                 break
-            elif score[index] == LetterResult.WRONG_POSITION and guessed_word[index] not in candidate:
+            elif (
+                    score[index] == LetterResult.WRONG_POSITION and 
+                    (guessed_word[index] not in candidate or guessed_word[index] == candidate[index])
+                ):
                 should_include = False
                 break
             elif score[index] == LetterResult.NOT_IN_WORD and guessed_word[index] in candidate:
