@@ -1,4 +1,6 @@
-# wordle
+# wordle solver
+Automatic solver for word puzzles similar to [Wordle](https://www.powerlanguage.co.uk/wordle/). Requires python 3.8+
+
 ### Corpus Generation
 `python cleaner.py <word length> <input file> <output file>`  
 Input file contains one string per line of arbitrary length. Output file will be one string per line containing strings from input file 
@@ -20,5 +22,3 @@ costs
 coups
 focus
 ```
-
-Requires python 3.8+
