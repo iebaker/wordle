@@ -1,7 +1,11 @@
 import sys
 from enum import Enum, auto
-from typing import List
+from typing import List, Tuple
 from random import choice 
+
+BG_GREEN = u"\u001b[42m"
+BG_YELLOW = u"\u001b[43m"
+RESET = u"\u001b[0m"
 
 class LetterResult(Enum):
     NOT_IN_WORD = auto()
@@ -42,25 +46,37 @@ def get_filtered_corpus(guessed_word: str, score: List[LetterResult], corpus: Li
             filtered_corpus.append(candidate)
     return filtered_corpus
 
-def solver_loop(corpus: List[str], target_word: str) -> List[str]:
+def solver_loop(corpus: List[str], target_word: str) -> List[Tuple[str, List[LetterResult]]]:
     guesses = []
     filtered_corpus = corpus.copy()
     guessed_word = None
     while guessed_word != target_word:
         guessed_word = choice(filtered_corpus)
-        guesses.append(guessed_word)
         score = score_guess(guessed_word, target_word)
+        guesses.append((guessed_word, score))
         filtered_corpus = get_filtered_corpus(guessed_word, score, filtered_corpus)
     return guesses
 
-def solve_wordle(corpus_filename: str, target_word: str) -> List[str]:
+def colorized_scored_guess(scored_guess: Tuple[str, List[LetterResult]]) -> str:
+    result = ""
+    guess, score = scored_guess
+    for index in range(len(guess)):
+        if score[index] == LetterResult.RIGHT_POSITION:
+            result = result + BG_GREEN + " " + guess[index].upper() + " " + RESET
+        elif score[index] == LetterResult.WRONG_POSITION:
+            result = result + BG_YELLOW + " " + guess[index].upper() + " " + RESET
+        else:
+            result = result + " " + guess[index].upper() + " "
+    return result
+
+def solve_wordle(corpus_filename: str, target_word: str) -> List[Tuple[str, List[LetterResult]]]:
     corpus = []
     with open(corpus_filename, 'r') as corpus_file:
         while(line := corpus_file.readline().rstrip()):
             corpus.append(line)
-    guesses = solver_loop(corpus, target_word)
-    for guess in guesses:
-        print(guess)
+    scored_guesses = solver_loop(corpus, target_word)
+    for scored_guess in scored_guesses:
+        print(colorized_scored_guess(scored_guess))
 
 if __name__ == "__main__":
     corpus_filename = sys.argv[1]
